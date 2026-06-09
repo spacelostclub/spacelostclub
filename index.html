@@ -1,0 +1,1603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Space Lost Club — Alien NFTs</title>
+  <meta name="description" content="unique Alien NFTs. One Universe. No Rules."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    /* ── VARIABLES ── */
+    :root {
+      --void:      #030310;
+      --deep:      #05051E;
+      --navy:      #080836;
+      --neon:      #00C8FF;
+      --electric:  #0070FF;
+      --neon-dim:  rgba(0,200,255,.18);
+      --cream:     #F5ECD7;
+      --cream2:    #EDE4CA;
+      --gold:      #C9A84C;
+      --gold-lt:   #F0D080;
+      --gold-dk:   #8B6914;
+      --white:     #FFFFFF;
+      --offwhite:  rgba(255,255,255,.82);
+      --dim:       rgba(255,255,255,.42);
+      --gap:       clamp(80px,10vw,130px);
+    }
+
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      background:var(--void);
+      color:var(--white);
+      font-family:'Space Grotesk',system-ui,sans-serif;
+      font-weight:400;
+      overflow-x:hidden;
+    }
+    ::-webkit-scrollbar{width:3px}
+    ::-webkit-scrollbar-track{background:var(--void)}
+    ::-webkit-scrollbar-thumb{background:var(--neon);border-radius:2px}
+
+    /* ── SCROLLBAR + SELECTION ── */
+    ::selection{background:rgba(0,200,255,.3);color:#fff}
+
+    /* ── NAV ── */
+    #nav{
+      position:fixed;inset:0 0 auto;z-index:1000;
+      padding:22px 60px;
+      display:flex;align-items:center;justify-content:space-between;
+      transition:padding .4s,background .4s,border-color .4s;
+    }
+    #nav.solid{
+      padding:14px 60px;
+      background:rgba(3,3,16,.92);
+      backdrop-filter:blur(20px);
+      border-bottom:1px solid rgba(0,200,255,.12);
+    }
+    .nav-logo{
+      font-family:'Orbitron',monospace;font-size:.75rem;font-weight:700;
+      letter-spacing:4px;text-transform:uppercase;
+      color:var(--white);text-decoration:none;
+      text-shadow:0 0 20px rgba(0,200,255,.5);
+    }
+    .nav-right{display:flex;align-items:center;gap:36px}
+    .nav-links{display:flex;gap:32px;list-style:none}
+    .nav-links a{
+      font-size:.7rem;font-weight:500;letter-spacing:2.5px;
+      text-transform:uppercase;color:var(--dim);
+      text-decoration:none;transition:color .25s,text-shadow .25s;
+    }
+    .nav-links a:hover{color:#fff;text-shadow:0 0 12px var(--neon)}
+    .nav-links a.opensea{
+      color:var(--neon);border:1px solid rgba(0,200,255,.3);
+      padding:6px 14px;border-radius:4px;
+      box-shadow:0 0 12px rgba(0,200,255,.12);
+      transition:all .25s;
+    }
+    .nav-links a.opensea:hover{
+      background:rgba(0,200,255,.1);
+      box-shadow:0 0 24px rgba(0,200,255,.4);color:#fff;
+    }
+    .nav-socials{display:flex;align-items:center;gap:14px}
+    .nav-socials a{
+      width:32px;height:32px;border:1px solid rgba(255,255,255,.14);
+      border-radius:50%;display:flex;align-items:center;justify-content:center;
+      text-decoration:none;transition:all .25s;
+    }
+    .nav-socials a svg{width:14px;fill:var(--dim);transition:fill .25s}
+    .nav-socials a:hover{border-color:var(--neon);box-shadow:0 0 12px rgba(0,200,255,.3)}
+    .nav-socials a:hover svg{fill:#fff}
+    .ham{
+      display:none;flex-direction:column;gap:5px;cursor:pointer;
+      background:none;border:none;padding:4px;
+    }
+    .ham span{display:block;width:20px;height:1.5px;background:#fff;transition:all .3s}
+    .ham.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg)}
+    .ham.open span:nth-child(2){opacity:0}
+    .ham.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg)}
+    .mob-menu{
+      display:none;position:fixed;inset:0;
+      background:rgba(3,3,16,.97);z-index:999;
+      flex-direction:column;align-items:center;justify-content:center;gap:44px;
+    }
+    .mob-menu.open{display:flex}
+    .mob-menu a{
+      font-family:'Orbitron',monospace;font-size:1.4rem;font-weight:700;
+      letter-spacing:6px;text-transform:uppercase;
+      color:rgba(255,255,255,.6);text-decoration:none;
+      transition:color .25s,text-shadow .25s;
+    }
+    .mob-menu a:hover{color:#fff;text-shadow:0 0 20px var(--neon)}
+
+    /* ── HERO ── */
+    #hero{
+      position:relative;height:100svh;min-height:680px;
+      display:flex;align-items:center;justify-content:center;
+      text-align:center;overflow:hidden;
+    }
+    #planet-canvas{position:fixed;inset:0;z-index:-1;pointer-events:none}
+    .hero-content{
+      position:relative;z-index:2;
+      display:flex;flex-direction:column;align-items:center;gap:0;
+    }
+    .hero-pre{
+      font-family:'Space Grotesk',sans-serif;font-size:.68rem;font-weight:500;
+      letter-spacing:8px;text-transform:uppercase;
+      color:var(--neon);text-shadow:0 0 20px rgba(0,200,255,.6);
+      margin-bottom:20px;
+      opacity:0;animation:riseIn .9s ease .2s forwards;
+    }
+    .hero-title{
+      font-family:'Orbitron',monospace;
+      font-size:clamp(2.8rem,8vw,7rem);
+      font-weight:900;line-height:.92;letter-spacing:.06em;
+      color:#fff;
+      text-shadow:
+        0 0 40px rgba(0,200,255,.5),
+        0 0 80px rgba(0,200,255,.2),
+        0 2px 4px rgba(0,0,0,.8);
+      opacity:0;animation:riseIn .9s ease .4s forwards;
+    }
+    .hero-line{
+      width:80px;height:1px;
+      background:linear-gradient(to right,transparent,var(--neon),transparent);
+      box-shadow:0 0 10px var(--neon);
+      margin:28px auto;
+      opacity:0;animation:fadeIn 1s ease .7s forwards;
+    }
+    .hero-sub{
+      font-size:clamp(.88rem,2vw,1.15rem);font-weight:300;
+      letter-spacing:.25em;color:rgba(255,255,255,.72);
+      text-transform:uppercase;
+      opacity:0;animation:riseIn .9s ease .85s forwards;
+      margin-bottom:40px;
+    }
+    .btn-cta{
+      display:inline-flex;align-items:center;gap:10px;
+      padding:15px 44px;
+      border:1px solid var(--neon);
+      color:#fff;text-decoration:none;
+      font-family:'Space Grotesk',sans-serif;font-size:.8rem;
+      font-weight:600;letter-spacing:3px;text-transform:uppercase;
+      background:rgba(0,200,255,.06);
+      box-shadow:
+        0 0 24px rgba(0,200,255,.3),
+        0 0 50px rgba(0,200,255,.1),
+        inset 0 1px 0 rgba(255,255,255,.1);
+      transition:all .35s cubic-bezier(.22,1,.36,1);
+      opacity:0;animation:fadeIn 1s ease 1.1s forwards;
+    }
+    .btn-cta:hover{
+      background:rgba(0,200,255,.14);
+      box-shadow:
+        0 0 35px rgba(0,200,255,.6),
+        0 0 80px rgba(0,200,255,.25),
+        0 8px 30px rgba(0,200,255,.3),
+        inset 0 1px 0 rgba(255,255,255,.2);
+      transform:translateY(-3px);
+      color:#fff;
+    }
+    .btn-cta svg{width:16px;fill:var(--neon)}
+    .scroll-ind{
+      position:absolute;bottom:36px;left:50%;transform:translateX(-50%);
+      display:flex;flex-direction:column;align-items:center;gap:8px;
+      opacity:0;animation:fadeIn 1s ease 1.5s forwards;
+    }
+    .scroll-ind span{
+      font-size:.52rem;letter-spacing:5px;text-transform:uppercase;
+      color:rgba(0,200,255,.5);
+    }
+    .scroll-ind .tick{
+      width:1px;height:30px;
+      background:linear-gradient(to bottom,var(--neon),transparent);
+      animation:tickPulse 2s ease-in-out infinite;
+    }
+
+    /* ── SECTION SHARED ── */
+    .sec{padding:var(--gap) 60px;position:relative}
+    .wrap{max-width:1240px;margin:0 auto}
+    .sec-eyebrow{
+      display:block;font-size:.62rem;font-weight:600;letter-spacing:6px;
+      text-transform:uppercase;margin-bottom:12px;
+    }
+    .sec-title{
+      font-family:'Orbitron',monospace;
+      font-size:clamp(1.6rem,3.5vw,2.8rem);
+      font-weight:700;line-height:1.1;margin-bottom:16px;
+    }
+    .sec-rule{
+      width:40px;height:2px;margin-bottom:48px;border-radius:1px;
+    }
+
+    /* ── MUSEUM SECTION ── */
+    #museum{
+      background:
+        linear-gradient(to right,rgba(100,5,20,.30) 0%,rgba(100,5,20,.09) 6%,transparent 14%),
+        linear-gradient(to left, rgba(100,5,20,.30) 0%,rgba(100,5,20,.09) 6%,transparent 14%),
+        repeating-linear-gradient(
+          111deg,
+          transparent 0,transparent 52px,
+          rgba(201,168,76,.10) 52px,rgba(240,210,120,.14) 53px,
+          rgba(201,168,76,.06) 54px,transparent 54px,transparent 106px
+        ),
+        repeating-linear-gradient(
+          67deg,
+          transparent 0,transparent 88px,
+          rgba(175,138,48,.08) 88px,rgba(220,182,78,.11) 89px,
+          transparent 89px,transparent 178px
+        ),
+        repeating-linear-gradient(
+          8deg,
+          transparent 0,transparent 140px,
+          rgba(160,152,140,.05) 140px,rgba(190,182,170,.07) 141px,
+          transparent 141px,transparent 280px
+        ),
+        linear-gradient(180deg,
+          #1A0A2E 0%,
+          #F8F4EC 6%,
+          #F4EFE6 30%,
+          #EDE8DF 55%,
+          #E5DFD4 78%,
+          #C8B89A 87%,
+          #7D1020 93%,
+          #2A0510 100%
+        );
+      position:relative;overflow:hidden;
+      padding:var(--gap) 0 calc(var(--gap)*1.3);
+    }
+    .museum-intro{
+      text-align:center;padding:0 60px;margin-bottom:60px;
+    }
+    .museum-intro .sec-eyebrow{color:#8B5E3C}
+    .museum-intro .sec-title{color:#2C1810}
+    .museum-intro .sec-rule{background:linear-gradient(to right,var(--gold-dk),var(--gold-lt),var(--gold-dk));margin:0 auto 48px}
+
+    /* gold shimmer sweep over marble veins */
+    #museum::before{
+      content:'';position:absolute;inset:0;
+      background:linear-gradient(
+        103deg,
+        transparent 20%,
+        rgba(255,240,140,.00) 35%,
+        rgba(255,248,170,.14) 50%,
+        rgba(255,240,140,.00) 65%,
+        transparent 80%
+      );
+      background-size:250% 100%;
+      animation:goldVeinShimmer 9s ease-in-out infinite;
+      pointer-events:none;
+    }
+
+    /* red velvet bottom strip + golden divider line */
+    #museum::after{
+      content:'';position:absolute;
+      bottom:0;left:0;right:0;height:88px;
+      background:linear-gradient(to bottom,
+        transparent,
+        rgba(110,8,24,.55) 28%,
+        #6E0E1C 58%,
+        #420810 85%,
+        #240408 100%
+      );
+      box-shadow:0 -1px 0 rgba(201,168,76,.55),0 -4px 20px rgba(201,168,76,.18);
+    }
+
+    .gallery-wall{
+      display:flex;align-items:flex-end;justify-content:center;
+      gap:clamp(30px,5vw,80px);
+      padding:0 60px;
+      position:relative;
+    }
+
+    .gallery-item{
+      display:flex;flex-direction:column;align-items:center;
+      position:relative;
+    }
+
+    /* spotlight beam from above */
+    .gallery-item::before{
+      content:'';
+      position:absolute;
+      top:-80px;left:50%;transform:translateX(-50%);
+      width:260px;height:320px;
+      background:conic-gradient(from 180deg at 50% 0%,
+        transparent 35%,rgba(255,220,120,.13) 43%,rgba(255,200,80,.18) 50%,rgba(255,220,120,.13) 57%,transparent 65%
+      );
+      pointer-events:none;z-index:0;
+    }
+
+    .frame-wrap{
+      position:relative;z-index:1;
+      /* outer gold moulding */
+      padding:14px;
+      background:linear-gradient(135deg,#E8C96A 0%,#C9A84C 20%,#F5D87A 40%,#8B6914 60%,#E8C96A 80%,#C9A84C 100%);
+      box-shadow:
+        6px 14px 40px rgba(0,0,0,.4),
+        2px 4px 10px rgba(0,0,0,.3),
+        inset 0 1px 0 rgba(255,255,255,.25),
+        inset 0 -1px 0 rgba(0,0,0,.2);
+      border-radius:2px;
+    }
+    /* inner gold detail */
+    .frame-inner{
+      padding:4px;
+      background:linear-gradient(135deg,#8B6914,#C9A84C,#8B6914);
+    }
+    /* mat — black backing behind image */
+    .frame-mat{
+      padding:12px;
+      background:#000000;
+    }
+    .frame-art{
+      width:clamp(160px,22vw,260px);
+      aspect-ratio:3/4;
+      position:relative;overflow:hidden;
+      display:block;
+    }
+    .frame-art canvas{width:100%;height:100%;display:block}
+
+    /* museum label */
+    .museum-label{
+      margin-top:18px;
+      background:linear-gradient(160deg,#FAF6EF,#F0E8D5);
+      border:1px solid rgba(139,105,20,.2);
+      padding:10px 20px 10px;
+      text-align:center;
+      box-shadow:2px 4px 12px rgba(0,0,0,.12);
+      min-width:140px;
+    }
+    .museum-label .label-id{
+      font-family:'Orbitron',monospace;font-size:.7rem;font-weight:700;
+      color:#2C1810;letter-spacing:3px;display:block;margin-bottom:3px;
+    }
+    .museum-label .label-name{
+      font-family:'Inter',sans-serif;font-size:.62rem;font-weight:300;
+      color:#5C4A32;letter-spacing:1.5px;text-transform:uppercase;
+    }
+    .label-bar{
+      width:30px;height:1px;
+      background:linear-gradient(to right,transparent,var(--gold),transparent);
+      margin:6px auto 0;
+    }
+
+    /* ── COLLECTION GRID SECTION ── */
+    #gallery{
+      background:rgba(3,3,16,.55);
+      padding:var(--gap) 60px;
+    }
+    .gallery-header{
+      text-align:center;margin-bottom:48px;
+    }
+    .gallery-header .sec-eyebrow{color:var(--neon)}
+    .gallery-header .sec-title{color:#fff}
+    .gallery-header .sec-rule{background:var(--neon);margin:0 auto 32px;box-shadow:0 0 8px var(--neon)}
+
+    .filter-bar{
+      display:flex;align-items:center;justify-content:center;
+      gap:10px;margin-bottom:44px;flex-wrap:wrap;
+    }
+    .filter-btn{
+      padding:8px 22px;
+      border:1px solid rgba(255,255,255,.15);
+      background:transparent;
+      color:rgba(255,255,255,.5);
+      font-family:'Space Grotesk',sans-serif;
+      font-size:.68rem;font-weight:600;letter-spacing:2.5px;
+      text-transform:uppercase;
+      cursor:pointer;border-radius:3px;
+      transition:all .25s;
+    }
+    .filter-btn:hover,.filter-btn.active{
+      border-color:var(--neon);color:#fff;
+      background:rgba(0,200,255,.08);
+      box-shadow:0 0 14px rgba(0,200,255,.2);
+    }
+    .filter-btn[data-filter="legendary"].active{border-color:#FFD700;color:#FFD700;background:rgba(255,215,0,.06);box-shadow:0 0 14px rgba(255,215,0,.2)}
+    .filter-btn[data-filter="rare"].active{border-color:#A855F7;color:#C084FC;background:rgba(168,85,247,.06);box-shadow:0 0 14px rgba(168,85,247,.2)}
+    .filter-btn[data-filter="uncommon"].active{border-color:var(--neon);color:var(--neon);background:rgba(0,200,255,.06);box-shadow:0 0 14px rgba(0,200,255,.2)}
+    .filter-btn[data-filter="common"].active{border-color:rgba(255,255,255,.45);color:rgba(255,255,255,.75)}
+
+    .stats-bar{
+      display:flex;justify-content:center;gap:40px;
+      margin-bottom:44px;flex-wrap:wrap;
+    }
+    .stat-item{text-align:center}
+    .stat-n{
+      font-family:'Orbitron',monospace;font-size:1.5rem;font-weight:700;
+      color:var(--neon);display:block;
+      text-shadow:0 0 14px rgba(0,200,255,.5);
+    }
+    .stat-l{font-size:.62rem;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:var(--dim)}
+
+    .nft-grid{
+      display:grid;
+      grid-template-columns:repeat(5,1fr);
+      gap:16px;
+    }
+    .nft-card{
+      position:relative;background:#07071A;
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:8px;overflow:hidden;
+      cursor:pointer;
+      transition:transform .3s cubic-bezier(.22,1,.36,1),border-color .3s,box-shadow .3s;
+    }
+    .nft-card:hover{
+      transform:translateY(-6px) scale(1.02);
+    }
+    .nft-card[data-rarity="legendary"]:hover{
+      border-color:#FFD700;
+      box-shadow:0 0 22px rgba(255,215,0,.5),0 12px 35px rgba(255,215,0,.2);
+    }
+    .nft-card[data-rarity="rare"]:hover{
+      border-color:#A855F7;
+      box-shadow:0 0 22px rgba(168,85,247,.5),0 12px 35px rgba(168,85,247,.2);
+    }
+    .nft-card[data-rarity="uncommon"]:hover{
+      border-color:var(--neon);
+      box-shadow:0 0 22px rgba(0,200,255,.5),0 12px 35px rgba(0,200,255,.2);
+    }
+    .nft-card[data-rarity="common"]:hover{
+      border-color:rgba(255,255,255,.35);
+      box-shadow:0 0 16px rgba(255,255,255,.08),0 10px 28px rgba(0,0,0,.4);
+    }
+    .card-img{width:100%;aspect-ratio:1;display:block;position:relative;overflow:hidden}
+    .card-img img{width:100%;height:100%;display:block;object-fit:cover}
+    .card-overlay{
+      position:absolute;inset:0;
+      display:flex;flex-direction:column;align-items:center;justify-content:center;
+      background:rgba(3,3,16,.88);
+      opacity:0;transition:opacity .3s;
+      gap:10px;
+    }
+    .nft-card:hover .card-overlay{opacity:1}
+    .card-overlay a{
+      display:inline-flex;align-items:center;gap:7px;
+      padding:9px 22px;
+      border:1px solid var(--neon);
+      color:#fff;text-decoration:none;
+      font-size:.65rem;font-weight:600;letter-spacing:2px;text-transform:uppercase;
+      background:rgba(0,200,255,.1);
+      box-shadow:0 0 16px rgba(0,200,255,.3);
+      transition:all .25s;border-radius:3px;
+    }
+    .card-overlay a:hover{background:rgba(0,200,255,.22);box-shadow:0 0 28px rgba(0,200,255,.5)}
+    .card-overlay a svg{width:13px;fill:var(--neon)}
+    .card-info{
+      padding:10px 12px 12px;
+      border-top:1px solid rgba(255,255,255,.06);
+    }
+    .card-header{display:flex;align-items:center;justify-content:space-between}
+    .card-id{
+      font-family:'Orbitron',monospace;font-size:.68rem;font-weight:700;
+      color:#fff;letter-spacing:1px;
+    }
+    .rarity-badge{
+      font-size:.52rem;font-weight:700;letter-spacing:2px;
+      text-transform:uppercase;padding:2px 8px;border-radius:2px;
+      background:rgba(180,0,255,.14);color:#C084FC;
+      border:1px solid rgba(180,0,255,.35);
+    }
+
+    .no-results{
+      grid-column:1/-1;text-align:center;
+      padding:60px;color:var(--dim);
+      font-size:.9rem;letter-spacing:2px;
+      display:none;
+    }
+
+    /* ── ABOUT SECTION ── */
+    #about{
+      position:relative;overflow:hidden;
+      background:linear-gradient(180deg,var(--void) 0%,#06061E 40%,#040415 100%);
+      padding:var(--gap) 60px;
+    }
+    #galaxy-canvas{
+      position:absolute;inset:0;z-index:0;opacity:.6;pointer-events:none;
+    }
+    .about-content{
+      position:relative;z-index:1;
+      max-width:1000px;margin:0 auto;text-align:center;
+    }
+    .about-content .sec-eyebrow{color:var(--neon)}
+    .about-content .sec-title{color:#fff;margin-bottom:8px}
+    .about-content .sec-rule{background:var(--neon);box-shadow:0 0 8px var(--neon);margin:0 auto 52px}
+
+    .about-lead{
+      font-size:clamp(1.05rem,2vw,1.3rem);font-weight:300;
+      color:rgba(255,255,255,.88);line-height:1.85;
+      letter-spacing:.02em;margin-bottom:44px;
+    }
+    .about-lead em{
+      font-style:normal;color:var(--neon);
+      text-shadow:0 0 12px rgba(0,200,255,.5);
+    }
+    .about-body{
+      font-size:.97rem;font-weight:300;
+      color:rgba(255,255,255,.55);line-height:2;
+      max-width:680px;margin:0 auto 60px;
+    }
+
+    .about-pillars{
+      display:grid;grid-template-columns:repeat(4,1fr);
+      gap:24px;margin-top:60px;
+    }
+    .pillar{
+      padding:28px 20px;
+      border:1px solid rgba(0,200,255,.14);
+      border-radius:6px;
+      background:rgba(0,200,255,.03);
+      text-align:center;
+      transition:border-color .3s,background .3s,transform .3s;
+    }
+    .pillar:hover{
+      border-color:rgba(0,200,255,.35);
+      background:rgba(0,200,255,.06);
+      transform:translateY(-4px);
+    }
+    .pillar-icon{font-size:1.8rem;margin-bottom:12px;display:block}
+    .pillar-num{
+      font-family:'Orbitron',monospace;font-size:1.6rem;font-weight:700;
+      color:var(--neon);display:block;
+      text-shadow:0 0 12px rgba(0,200,255,.5);
+    }
+    .pillar-lbl{
+      font-size:.62rem;font-weight:600;letter-spacing:2.5px;
+      text-transform:uppercase;color:var(--dim);
+      margin-top:5px;display:block;
+    }
+
+    /* ── FOOTER ── */
+    footer{
+      background:#020209;
+      border-top:1px solid rgba(0,200,255,.1);
+      padding:60px 60px 36px;
+    }
+    .footer-top{
+      display:grid;grid-template-columns:1fr 1fr 1fr;
+      gap:48px;margin-bottom:48px;
+      padding-bottom:48px;
+      border-bottom:1px solid rgba(255,255,255,.06);
+    }
+    .footer-brand .logo-text{
+      font-family:'Orbitron',monospace;font-size:.78rem;font-weight:700;
+      letter-spacing:4px;color:#fff;
+      text-shadow:0 0 18px rgba(0,200,255,.4);
+      display:block;margin-bottom:14px;
+    }
+    .footer-brand p{
+      font-size:.78rem;font-weight:300;
+      color:rgba(255,255,255,.38);line-height:1.8;
+    }
+    .footer-nav h4,.footer-social h4{
+      font-size:.6rem;font-weight:700;letter-spacing:4px;
+      text-transform:uppercase;color:var(--neon);
+      margin-bottom:18px;
+    }
+    .footer-nav ul{list-style:none;display:flex;flex-direction:column;gap:10px}
+    .footer-nav a{
+      font-size:.78rem;font-weight:400;
+      color:rgba(255,255,255,.38);text-decoration:none;
+      transition:color .2s;
+    }
+    .footer-nav a:hover{color:#fff}
+    .footer-social-icons{display:flex;gap:12px}
+    .footer-social-icons a{
+      width:36px;height:36px;border:1px solid rgba(0,200,255,.18);
+      border-radius:50%;display:flex;align-items:center;justify-content:center;
+      text-decoration:none;transition:all .25s;
+    }
+    .footer-social-icons a svg{width:15px;fill:rgba(255,255,255,.4);transition:fill .25s}
+    .footer-social-icons a:hover{border-color:var(--neon);box-shadow:0 0 12px rgba(0,200,255,.3)}
+    .footer-social-icons a:hover svg{fill:#fff}
+    .footer-bottom{
+      display:flex;align-items:flex-start;justify-content:space-between;
+      flex-wrap:wrap;gap:16px;
+    }
+    .footer-copy{
+      font-size:.65rem;color:rgba(255,255,255,.2);letter-spacing:1px;
+    }
+    .footer-coords{
+      font-family:'Space Grotesk',monospace;font-size:.62rem;
+      color:rgba(0,200,255,.35);letter-spacing:.5px;
+      text-align:right;line-height:1.8;
+      border-left:1px solid rgba(0,200,255,.15);
+      padding-left:16px;
+    }
+
+    /* ── EXCLUSIVE CLUB label in hero ── */
+    .hero-exclusive{
+      font-family:'Space Grotesk',sans-serif;
+      font-size:.58rem;font-weight:300;
+      letter-spacing:14px;text-transform:uppercase;
+      color:rgba(255,255,255,.32);
+      display:block;margin-bottom:10px;
+      opacity:0;animation:riseIn .9s ease .08s forwards;
+    }
+
+    /* ── MAKE AN OFFER section ── */
+    #offer{background:linear-gradient(180deg,rgba(5,5,16,.78) 0%,rgba(9,6,32,.78) 50%,rgba(3,3,16,.78) 100%)}
+    .offer-center{text-align:center;max-width:520px;margin:0 auto}
+    .offer-form{display:flex;flex-direction:column;align-items:center;gap:22px}
+    .offer-input-wrap{
+      display:flex;align-items:center;
+      border:1px solid rgba(0,200,255,.3);border-radius:4px;overflow:hidden;
+      background:rgba(0,200,255,.04);width:100%;max-width:340px;
+    }
+    .eth-sym{
+      padding:15px 18px;
+      font-family:'Orbitron',monospace;font-size:1.15rem;font-weight:700;
+      color:var(--neon);text-shadow:0 0 10px rgba(0,200,255,.5);
+      border-right:1px solid rgba(0,200,255,.15);flex-shrink:0;
+    }
+    .eth-input{
+      flex:1;padding:15px 14px;
+      background:transparent;border:none;outline:none;
+      color:#fff;font-family:'Space Grotesk',sans-serif;
+      font-size:1.25rem;font-weight:600;letter-spacing:1px;
+      -moz-appearance:textfield;min-width:0;
+    }
+    .eth-input::-webkit-inner-spin-button,.eth-input::-webkit-outer-spin-button{-webkit-appearance:none}
+    .eth-input::placeholder{color:rgba(255,255,255,.18)}
+    .eth-unit{
+      padding:15px 16px;flex-shrink:0;
+      font-size:.68rem;font-weight:700;letter-spacing:3px;
+      color:rgba(255,255,255,.32);
+      border-left:1px solid rgba(0,200,255,.1);
+    }
+    .offer-btn{
+      display:flex;align-items:center;justify-content:center;
+      width:100%;max-width:340px;
+      padding:17px;
+      border:1px solid var(--neon);color:#fff;text-decoration:none;
+      font-family:'Orbitron',monospace;font-size:.82rem;
+      font-weight:700;letter-spacing:4px;text-transform:uppercase;
+      background:rgba(0,200,255,.07);
+      box-shadow:0 0 22px rgba(0,200,255,.25),0 0 50px rgba(0,200,255,.08),inset 0 1px 0 rgba(255,255,255,.1);
+      transition:all .35s cubic-bezier(.22,1,.36,1);border-radius:3px;
+    }
+    .offer-btn:hover{
+      background:rgba(0,200,255,.16);
+      box-shadow:0 0 32px rgba(0,200,255,.6),0 0 75px rgba(0,200,255,.22),0 8px 28px rgba(0,200,255,.28),inset 0 1px 0 rgba(255,255,255,.2);
+      transform:translateY(-2px);
+    }
+    .offer-note{
+      font-family:'Inter',sans-serif;font-size:.7rem;font-weight:300;
+      color:rgba(255,255,255,.24);letter-spacing:.5px;text-align:center;
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes riseIn{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+    @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+    @keyframes tickPulse{0%,100%{opacity:.35;transform:scaleY(1)}50%{opacity:.9;transform:scaleY(1.3)}}
+    @keyframes goldVeinShimmer{0%,100%{background-position:120% 50%}50%{background-position:-20% 50%}}
+
+    .reveal{opacity:0;transform:translateY(28px);transition:opacity .75s ease,transform .75s ease}
+    .reveal.in{opacity:1;transform:translateY(0)}
+    .reveal-scale{opacity:0;transform:scale(.96);transition:opacity .7s ease,transform .7s ease}
+    .reveal-scale.in{opacity:1;transform:scale(1)}
+
+    /* ── RESPONSIVE ── */
+    @media(max-width:1100px){
+      .nft-grid{grid-template-columns:repeat(4,1fr)}
+      .about-pillars{grid-template-columns:repeat(2,1fr)}
+    }
+    @media(max-width:900px){
+      #nav,#nav.solid{padding:18px 28px}
+      .nav-links{display:none}
+      .ham{display:flex}
+      .sec,#museum,#gallery,#about,footer{padding-left:28px;padding-right:28px}
+      .gallery-wall{flex-direction:column;align-items:center;padding:0 28px}
+      .nft-grid{grid-template-columns:repeat(3,1fr);gap:12px}
+      .footer-top{grid-template-columns:1fr}
+      .footer-bottom{flex-direction:column}
+      .footer-coords{text-align:left;border-left:none;border-top:1px solid rgba(0,200,255,.15);padding-left:0;padding-top:12px}
+    }
+    @media(max-width:640px){
+      .nft-grid{grid-template-columns:repeat(2,1fr);gap:10px}
+      .stats-bar{gap:24px}
+      .about-pillars{grid-template-columns:repeat(2,1fr);gap:16px}
+      .museum-intro,.gallery-wall{padding-left:24px;padding-right:24px}
+    }
+    @media(max-width:400px){
+      .nft-grid{grid-template-columns:repeat(2,1fr);gap:8px}
+    }
+  </style>
+</head>
+<body>
+
+<!-- PLANET — fixed full-screen canvas behind everything -->
+<canvas id="planet-canvas"></canvas>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="#hero" class="nav-logo">Space Lost Club</a>
+  <div class="nav-right">
+    <ul class="nav-links">
+      <li><a href="#gallery">Collection</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="https://opensea.io/spacelostclub" target="_blank" rel="noopener" class="opensea">OpenSea ↗</a></li>
+    </ul>
+    <div class="nav-socials">
+      <!-- Instagram -->
+      <a href="#" aria-label="Instagram">
+        <svg viewBox="0 0 24 24"><path d="M12 2.2c3.2 0 3.6 0 4.8.1 3.3.2 4.8 1.7 5 5 .1 1.2.1 1.6.1 4.7s0 3.6-.1 4.8c-.2 3.2-1.7 4.8-5 5-1.2.1-1.5.1-4.8.1s-3.6 0-4.8-.1c-3.3-.2-4.8-1.8-5-5C2.1 15.6 2.1 15.3 2.1 12s0-3.6.1-4.8c.2-3.3 1.7-4.8 5-5C8.4 2.2 8.8 2.2 12 2.2zM12 0C8.7 0 8.3 0 7.1.1 2.7.3.3 2.7.1 7.1 0 8.3 0 8.7 0 12c0 3.3 0 3.7.1 4.9.2 4.4 2.6 6.8 7 7C8.3 24 8.7 24 12 24s3.7 0 4.9-.1c4.4-.2 6.8-2.6 7-7C24 15.7 24 15.3 24 12s0-3.7-.1-4.9c-.2-4.4-2.6-6.8-7-7C15.7 0 15.3 0 12 0zm0 5.8a6.2 6.2 0 1 0 0 12.4A6.2 6.2 0 0 0 12 5.8zm0 10.2a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.4-11.8a1.44 1.44 0 1 0 0 2.88 1.44 1.44 0 0 0 0-2.88z"/></svg>
+      </a>
+      <!-- X / Twitter -->
+      <a href="#" aria-label="X">
+        <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.748l7.73-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+      </a>
+      <!-- TikTok -->
+      <a href="#" aria-label="TikTok">
+        <svg viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.73z"/></svg>
+      </a>
+    </div>
+    <button class="ham" id="ham" onclick="toggleMob()" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mob-menu" id="mobMenu">
+  <a href="#gallery"    onclick="closeMob()">Collection</a>
+  <a href="#about"      onclick="closeMob()">About</a>
+  <a href="https://opensea.io/spacelostclub" target="_blank" onclick="closeMob()">OpenSea</a>
+</div>
+
+<!-- ══════════════ HERO ══════════════ -->
+<section id="hero">
+  <div class="hero-content">
+    <span class="hero-pre">Limited Drop — Unique Aliens</span>
+    <span class="hero-exclusive">Exclusive Club</span>
+    <h1 class="hero-title">SPACE<br>LOST CLUB</h1>
+    <div class="hero-line"></div>
+    <p class="hero-sub"> Alien NFTs &nbsp;·&nbsp; One Universe &nbsp;·&nbsp; No Rules</p>
+    <a href="https://opensea.io/spacelostclub" target="_blank" rel="noopener" class="btn-cta">
+      <svg viewBox="0 0 24 24"><path d="M12 0C5.374 0 0 5.374 0 12c0 6.627 5.374 12 12 12s12-5.373 12-12c0-6.626-5.374-12-12-12zm-2.04 17.94H6.86V10.3l3.1.014v7.626zm-1.558-8.677a1.8 1.8 0 1 1 0-3.6 1.8 1.8 0 0 1 0 3.6zm10.69 8.677h-3.094v-3.7c0-1.298-.464-2.186-1.627-2.186-.888 0-1.415.597-1.647 1.173-.085.207-.106.495-.106.784v3.929H9.524s.042-6.374 0-7.634h3.094v1.082c.41-.634 1.144-1.538 2.783-1.538 2.033 0 3.556 1.328 3.556 4.182l-.002 3.908z"/></svg>
+      Mint on OpenSea
+    </a>
+  </div>
+  <div class="scroll-ind">
+    <span>Scroll</span>
+    <div class="tick"></div>
+  </div>
+</section>
+
+<!-- ══════════════ THE STORY ══════════════ -->
+<section id="about">
+  <canvas id="galaxy-canvas"></canvas>
+  <div class="about-content">
+    <span class="sec-eyebrow reveal">The Story</span>
+    <h2 class="sec-title reveal">What Is Space Lost Club?</h2>
+    <div class="sec-rule reveal"></div>
+    <p class="about-lead reveal">
+      100 hand-crafted alien citizens from the <em>farthest corners of the universe</em> — each a unique member of an <em>exclusive club</em>, united across the void, searching for a home among the stars.
+    </p>
+    <div class="about-body reveal">
+      <p style="margin-bottom:20px">
+        These are not just digital assets. They are cosmic travelers, ancient beings of light and darkness — each one carrying the secrets of civilizations long forgotten by time.
+      </p>
+      <p style="margin-bottom:20px">
+        Space Lost Club is the <em>exclusive club</em> of the cosmos — 100 members, one universe, no rules, no boundaries, no limits. Holding a Space Lost Club NFT means joining this elite fellowship forever.
+      </p>
+      <p>
+        The universe is vast. But you are not alone.
+      </p>
+    </div>
+    <div class="about-pillars">
+      <div class="pillar reveal">
+        <span class="pillar-icon">🌌</span>
+        <span class="pillar-num">100</span>
+        <span class="pillar-lbl">Unique Citizens</span>
+      </div>
+      <div class="pillar reveal" style="transition-delay:.08s">
+        <span class="pillar-icon">⛓️</span>
+        <span class="pillar-num">∞</span>
+        <span class="pillar-lbl">On-chain Forever</span>
+      </div>
+      <div class="pillar reveal" style="transition-delay:.16s">
+        <span class="pillar-icon">👁️</span>
+        <span class="pillar-num">100</span>
+        <span class="pillar-lbl">Ultra Rare</span>
+      </div>
+      <div class="pillar reveal" style="transition-delay:.24s">
+        <span class="pillar-icon">🚀</span>
+        <span class="pillar-num">1</span>
+        <span class="pillar-lbl">Universe</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ MUSEUM ══════════════ -->
+<section id="museum">
+  <div class="museum-intro reveal">
+    <span class="sec-eyebrow">Featured Pieces</span>
+    <h2 class="sec-title">The Gallery</h2>
+    <div class="sec-rule"></div>
+    <p style="font-family:'Inter',sans-serif;font-size:.9rem;font-weight:300;color:#5C4A32;max-width:540px;margin:0 auto;line-height:1.9;letter-spacing:.02em">
+      Three extraordinary beings from the collection — each a unique entity from a distant corner of the cosmos, now preserved forever on the blockchain.
+    </p>
+  </div>
+
+  <div class="gallery-wall">
+    <div class="gallery-item reveal">
+      <div class="frame-wrap">
+        <div class="frame-inner">
+          <div class="frame-mat">
+            <div class="frame-art"><img src="images/087.png" alt="NFT #087" style="width:100%;height:100%;display:block;object-fit:cover"></div>
+          </div>
+        </div>
+      </div>
+      <div class="museum-label">
+        <span class="label-id">NFT #087</span>
+        <div class="label-bar"></div>
+      </div>
+    </div>
+
+    <div class="gallery-item reveal" style="transition-delay:.12s">
+      <div class="frame-wrap">
+        <div class="frame-inner">
+          <div class="frame-mat">
+            <div class="frame-art"><img src="images/00060.png" alt="NFT #060" style="width:100%;height:100%;display:block;object-fit:cover"></div>
+          </div>
+        </div>
+      </div>
+      <div class="museum-label">
+        <span class="label-id">NFT #060</span>
+        <div class="label-bar"></div>
+      </div>
+    </div>
+
+    <div class="gallery-item reveal" style="transition-delay:.24s">
+      <div class="frame-wrap">
+        <div class="frame-inner">
+          <div class="frame-mat">
+            <div class="frame-art"><img src="images/006.png" alt="NFT #006" style="width:100%;height:100%;display:block;object-fit:cover"></div>
+          </div>
+        </div>
+      </div>
+      <div class="museum-label">
+        <span class="label-id">NFT #006</span>
+        <div class="label-bar"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ MAKE AN OFFER ══════════════ -->
+<section id="offer" class="sec">
+  <div class="wrap">
+    <div class="offer-center">
+      <span class="sec-eyebrow reveal" style="color:var(--neon)">Exclusive Access</span>
+      <h2 class="sec-title reveal" style="color:#fff">MAKE YOUR OFFER</h2>
+      <div class="sec-rule reveal" style="background:var(--neon);box-shadow:0 0 8px var(--neon);margin:0 auto 44px"></div>
+      <div class="offer-form">
+        <div class="offer-input-wrap reveal">
+          <span class="eth-sym">Ξ</span>
+          <input type="number" class="eth-input" placeholder="0.00" min="0" step="0.01"/>
+          <span class="eth-unit">ETH</span>
+        </div>
+        <a href="https://opensea.io/spacelostclub" target="_blank" rel="noopener" class="offer-btn reveal">
+          SUBMIT OFFER
+        </a>
+        <p class="offer-note reveal">You will be redirected to OpenSea to complete your offer</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ COLLECTION GRID ══════════════ -->
+<section id="gallery">
+  <div class="wrap">
+    <div class="gallery-header reveal">
+      <span class="sec-eyebrow">Full Collection</span>
+      <h2 class="sec-title">100 Alien Citizens</h2>
+      <div class="sec-rule"></div>
+    </div>
+
+    <div class="stats-bar reveal">
+      <div class="stat-item">
+        <span class="stat-n">100</span>
+        <span class="stat-l">Total Supply</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-n" style="color:#C084FC;text-shadow:0 0 14px rgba(180,0,255,.5)">100</span>
+        <span class="stat-l">Ultra Rare</span>
+      </div>
+    </div>
+
+    <div class="nft-grid" id="nftGrid">
+      <div class="no-results" id="noResults">No NFTs found for this filter.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ FOOTER ══════════════ -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <span class="logo-text">Space Lost Club</span>
+      <p>unique alien citizens, lost in the cosmos, preserved forever on the blockchain.</p>
+    </div>
+    <div class="footer-nav">
+      <h4>Navigate</h4>
+      <ul>
+        <li><a href="#hero">Home</a></li>
+        <li><a href="#museum">Gallery</a></li>
+        <li><a href="#gallery">Collection</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="https://opensea.io/spacelostclub" target="_blank">OpenSea ↗</a></li>
+      </ul>
+    </div>
+    <div class="footer-social">
+      <h4>Follow the Signal</h4>
+      <div class="footer-social-icons">
+        <a href="#" aria-label="Instagram">
+          <svg viewBox="0 0 24 24"><path d="M12 2.2c3.2 0 3.6 0 4.8.1 3.3.2 4.8 1.7 5 5 .1 1.2.1 1.6.1 4.7s0 3.6-.1 4.8c-.2 3.2-1.7 4.8-5 5-1.2.1-1.5.1-4.8.1s-3.6 0-4.8-.1c-3.3-.2-4.8-1.8-5-5C2.1 15.6 2.1 15.3 2.1 12s0-3.6.1-4.8c.2-3.3 1.7-4.8 5-5C8.4 2.2 8.8 2.2 12 2.2zM12 0C8.7 0 8.3 0 7.1.1 2.7.3.3 2.7.1 7.1 0 8.3 0 8.7 0 12c0 3.3 0 3.7.1 4.9.2 4.4 2.6 6.8 7 7C8.3 24 8.7 24 12 24s3.7 0 4.9-.1c4.4-.2 6.8-2.6 7-7C24 15.7 24 15.3 24 12s0-3.7-.1-4.9c-.2-4.4-2.6-6.8-7-7C15.7 0 15.3 0 12 0zm0 5.8a6.2 6.2 0 1 0 0 12.4A6.2 6.2 0 0 0 12 5.8zm0 10.2a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.4-11.8a1.44 1.44 0 1 0 0 2.88 1.44 1.44 0 0 0 0-2.88z"/></svg>
+        </a>
+        <a href="#" aria-label="X">
+          <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.748l7.73-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+        </a>
+        <a href="#" aria-label="TikTok">
+          <svg viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.73z"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p class="footer-copy">&copy; 2025 Space Lost Club. All rights reserved. unique alien citizens on the Ethereum blockchain.</p>
+    <div class="footer-coords">
+      Orion Nebula Sector 7, NGC 1976<br>
+      Coordinates: RA 05h 35m 17s / Dec −05° 23′ 28″<br>
+      1,344 light-years from Earth
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ══════════════════════════════════════════════════
+   PLANET CANVAS — fixed full-screen background
+══════════════════════════════════════════════════ */
+(function () {
+  const cv = document.getElementById('planet-canvas');
+  const cx = cv.getContext('2d');
+  let W, H, stars = [], t = 0;
+  let active = true;
+
+  function resize() {
+    W = cv.width  = window.innerWidth;
+    H = cv.height = window.innerHeight;
+    buildStars();
+  }
+
+  function buildStars() {
+    stars = [];
+    const n = Math.floor(W * H / 2800);
+    for (let i = 0; i < n; i++) {
+      stars.push({
+        x: Math.random() * W, y: Math.random() * H,
+        r: Math.random() * 1.2 + .1,
+        a: Math.random() * .8 + .1,
+        tw: Math.random() * .02 + .005,
+        tp: Math.random() * Math.PI * 2,
+        blue: Math.random() < .25
+      });
+    }
+  }
+
+  function drawFrame() {
+    t += 0.008;
+
+    /* deep space background */
+    cx.fillStyle = '#030310';
+    cx.fillRect(0, 0, W, H);
+
+    /* subtle nebula glow behind planet — violet */
+    const nx = W * .5, ny = H * .48;
+    const nebula = cx.createRadialGradient(nx, ny, 0, nx, ny, W * .5);
+    nebula.addColorStop(0,   'rgba(80,0,180,.12)');
+    nebula.addColorStop(.4,  'rgba(40,0,100,.06)');
+    nebula.addColorStop(1,   'transparent');
+    cx.fillStyle = nebula;
+    cx.fillRect(0, 0, W, H);
+
+    /* stars */
+    stars.forEach(s => {
+      const twinkle = s.a * (.65 + .35 * Math.sin(t * s.tw * 60 + s.tp));
+      cx.save();
+      if (s.blue) { cx.shadowBlur = 5; cx.shadowColor = 'rgba(180,0,255,.5)'; }
+      cx.globalAlpha = twinkle;
+      cx.fillStyle = s.blue ? '#D4A8FF' : '#FFFFFF';
+      cx.beginPath(); cx.arc(s.x, s.y, s.r, 0, Math.PI * 2); cx.fill();
+      cx.restore();
+    });
+
+    /* planet position: fixed at exact screen center */
+    const pr = Math.min(W, H) * .36;
+    const px = W * .5;
+    const py = H * .5;
+
+    /* ── rings back half (far side — behind planet) ── */
+    const ringT = t * 2.0;
+    const RINGS = [
+      {r:255,g:110,b:0,   glow:'#FF6E00'},  /* neon orange  */
+      {r:0,  g:220,b:255, glow:'#00DCFF'},  /* bright cyan  */
+      {r:255,g:0,  b:200, glow:'#FF00C8'},  /* fuchsia pink */
+    ];
+    cx.save();
+    cx.translate(px, py);
+    cx.scale(1, .28);
+    for (let i = 0; i < 3; i++) {
+      const ro = pr * (1.35 + i * .18);
+      const ri = pr * (1.25 + i * .18);
+      const c = RINGS[i];
+      cx.beginPath();
+      cx.arc(0, 0, ro, Math.PI, 0); cx.arc(0, 0, ri, 0, Math.PI, true);
+      cx.closePath();
+      cx.shadowBlur = 24; cx.shadowColor = c.glow;
+      cx.fillStyle = `rgba(${c.r},${c.g},${c.b},${.26 - i * .04})`;
+      cx.fill();
+      cx.shadowBlur = 0;
+    }
+    /* orbiting particles — back half only (sin(a) < 0 = top of ellipse = far side) */
+    for (let p = 0; p < 72; p++) {
+      const a = (p / 72) * Math.PI * 2 + ringT;
+      if (Math.sin(a) >= 0) continue;
+      const band = p % 3;
+      const c = RINGS[band];
+      const radius = pr * (1.30 + band * .18);
+      const bright = 0.3 + 0.7 * Math.abs(Math.cos(a));
+      cx.save();
+      cx.globalAlpha = bright * 0.72;
+      cx.fillStyle = `rgb(${c.r},${c.g},${c.b})`;
+      cx.shadowBlur = 10; cx.shadowColor = c.glow;
+      cx.beginPath(); cx.arc(Math.cos(a) * radius, Math.sin(a) * radius, 2.0, 0, Math.PI * 2); cx.fill();
+      cx.restore();
+    }
+    cx.restore();
+
+    /* ── main sphere ── */
+    const sg = cx.createRadialGradient(px - pr * .28, py - pr * .25, pr * .05, px, py, pr);
+    sg.addColorStop(0,   '#C040FF');
+    sg.addColorStop(.18, '#8020D0');
+    sg.addColorStop(.45, '#5000A0');
+    sg.addColorStop(.72, '#300060');
+    sg.addColorStop(1,   '#080010');
+    cx.save();
+    cx.beginPath(); cx.arc(px, py, pr, 0, Math.PI * 2);
+    cx.fillStyle = sg; cx.fill();
+
+    /* surface bands (rotate with time) */
+    cx.clip();
+    for (let i = 0; i < 7; i++) {
+      const by = py - pr + (pr * 2 / 7) * i + Math.sin(t * .4 + i * 1.2) * 8;
+      const bw = pr * 2;
+      const bh = pr * .28;
+      const band = cx.createLinearGradient(px - pr, by + bh * .5, px + pr, by + bh * .5);
+      band.addColorStop(0,   'transparent');
+      band.addColorStop(.2,  `hsla(${270 + i * 8},80%,${50 + i * 3}%,0.04)`);
+      band.addColorStop(.8,  `hsla(${270 + i * 8},80%,${50 + i * 3}%,0.04)`);
+      band.addColorStop(1,   'transparent');
+      cx.fillStyle = band;
+      cx.fillRect(px - pr, by, bw, bh);
+    }
+
+    /* polar cap glow */
+    const capGrd = cx.createRadialGradient(px, py - pr * .75, 0, px, py - pr * .75, pr * .6);
+    capGrd.addColorStop(0,   'rgba(220,160,255,.14)');
+    capGrd.addColorStop(1,   'transparent');
+    cx.fillStyle = capGrd; cx.fillRect(px - pr, py - pr, pr * 2, pr);
+    cx.restore();
+
+    /* ── atmospheric halo ── */
+    const atm = cx.createRadialGradient(px, py, pr * .88, px, py, pr * 1.32);
+    atm.addColorStop(0,   'rgba(150,0,255,.28)');
+    atm.addColorStop(.4,  'rgba(100,0,200,.12)');
+    atm.addColorStop(.7,  'rgba(60,0,180,.05)');
+    atm.addColorStop(1,   'transparent');
+    cx.beginPath(); cx.arc(px, py, pr * 1.32, 0, Math.PI * 2);
+    cx.fillStyle = atm; cx.fill();
+
+    /* ── limb highlight ── */
+    const limb = cx.createLinearGradient(px - pr, py, px - pr * .6, py);
+    limb.addColorStop(0, 'rgba(200,100,255,.22)');
+    limb.addColorStop(1, 'transparent');
+    cx.save();
+    cx.beginPath(); cx.arc(px, py, pr, 0, Math.PI * 2); cx.clip();
+    cx.fillStyle = limb; cx.fillRect(px - pr, py - pr, pr * .6, pr * 2);
+    cx.restore();
+
+    /* rings front half (near side — in front of planet) */
+    cx.save();
+    cx.translate(px, py);
+    cx.scale(1, .28);
+    for (let i = 0; i < 3; i++) {
+      const ro = pr * (1.35 + i * .18);
+      const ri = pr * (1.25 + i * .18);
+      const c = RINGS[i];
+      cx.beginPath();
+      cx.arc(0, 0, ro, 0, Math.PI, true); cx.arc(0, 0, ri, Math.PI, 0, true);
+      cx.closePath();
+      cx.shadowBlur = 24; cx.shadowColor = c.glow;
+      cx.fillStyle = `rgba(${c.r},${c.g},${c.b},${.20 - i * .03})`;
+      cx.fill();
+      cx.shadowBlur = 0;
+    }
+    /* orbiting particles — front half only (sin(a) > 0 = bottom of ellipse = near side) */
+    for (let p = 0; p < 72; p++) {
+      const a = (p / 72) * Math.PI * 2 + ringT;
+      if (Math.sin(a) <= 0) continue;
+      const band = p % 3;
+      const c = RINGS[band];
+      const radius = pr * (1.30 + band * .18);
+      const bright = 0.3 + 0.7 * Math.abs(Math.cos(a));
+      cx.save();
+      cx.globalAlpha = bright * 0.85;
+      cx.fillStyle = `rgb(${c.r},${c.g},${c.b})`;
+      cx.shadowBlur = 10; cx.shadowColor = c.glow;
+      cx.beginPath(); cx.arc(Math.cos(a) * radius, Math.sin(a) * radius, 2.0, 0, Math.PI * 2); cx.fill();
+      cx.restore();
+    }
+    cx.restore();
+
+    /* floating asteroids */
+    for (let i = 0; i < 6; i++) {
+      const angle  = (t * (.06 + i * .012)) + i * 1.1;
+      const dist   = pr * (1.7 + i * .22);
+      const ax     = px + Math.cos(angle) * dist;
+      const ay     = py + Math.sin(angle) * dist * .2;
+      const ar     = 1.5 + i * .5;
+      cx.save();
+      cx.globalAlpha = .45 - i * .04;
+      cx.fillStyle = '#B8A0DD';
+      cx.beginPath(); cx.arc(ax, ay, ar, 0, Math.PI * 2); cx.fill();
+      cx.restore();
+    }
+
+    requestAnimationFrame(drawFrame);
+  }
+
+  resize();
+  drawFrame();
+  window.addEventListener('resize', resize);
+})();
+
+/* ══════════════════════════════════════════════════
+   GALAXY CANVAS — about section background
+══════════════════════════════════════════════════ */
+(function () {
+  const cv = document.getElementById('galaxy-canvas');
+  const cx = cv.getContext('2d');
+  let W, H, pts = [], t = 0;
+
+  function resize() {
+    const r = cv.parentElement.getBoundingClientRect();
+    W = cv.width  = r.width;
+    H = cv.height = r.height;
+    buildGalaxy();
+  }
+
+  function buildGalaxy() {
+    pts = [];
+    const arms = 3, perArm = 280;
+    for (let a = 0; a < arms; a++) {
+      for (let i = 0; i < perArm; i++) {
+        const progress  = i / perArm;
+        const angle     = progress * Math.PI * 4 + (a * (Math.PI * 2 / arms));
+        const radius    = progress * Math.min(W, H) * .42;
+        const spread    = radius * .25;
+        pts.push({
+          bx: Math.cos(angle) * radius,
+          by: Math.sin(angle) * radius * .55,
+          ox: (Math.random() - .5) * spread,
+          oy: (Math.random() - .5) * spread * .55,
+          r:  Math.random() * 1.4 + .2,
+          a:  Math.random() * .6 + .15,
+          c:  a === 0 ? '#9EE8FF' : a === 1 ? '#C0A8FF' : '#FFE8A0',
+          tw: Math.random() * .03 + .01,
+          tp: Math.random() * Math.PI * 2,
+        });
+      }
+    }
+  }
+
+  function drawGalaxy() {
+    t += .004;
+    const scroll   = window.scrollY;
+    const aboutTop = document.getElementById('about').offsetTop;
+    const rel      = Math.max(0, scroll - aboutTop + window.innerHeight);
+    const rotOffset = rel * .00015;
+
+    cx.clearRect(0, 0, W, H);
+    const cx0 = W * .5, cy0 = H * .5;
+
+    pts.forEach(p => {
+      const angle  = rotOffset;
+      const cosA   = Math.cos(angle), sinA = Math.sin(angle);
+      const rx = p.bx * cosA - p.by * sinA + p.ox;
+      const ry = p.bx * sinA + p.by * cosA + p.oy;
+      const twinkle = p.a * (.6 + .4 * Math.sin(t * p.tw * 60 + p.tp));
+      cx.save();
+      cx.globalAlpha = twinkle;
+      cx.shadowBlur  = 4;
+      cx.shadowColor = p.c;
+      cx.fillStyle   = p.c;
+      cx.beginPath();
+      cx.arc(cx0 + rx, cy0 + ry, p.r, 0, Math.PI * 2);
+      cx.fill();
+      cx.restore();
+    });
+
+    /* central glow */
+    const grd = cx.createRadialGradient(cx0, cy0, 0, cx0, cy0, 80);
+    grd.addColorStop(0,  'rgba(0,200,255,.22)');
+    grd.addColorStop(.5, 'rgba(0,100,200,.08)');
+    grd.addColorStop(1,  'transparent');
+    cx.fillStyle = grd;
+    cx.beginPath(); cx.arc(cx0, cy0, 80, 0, Math.PI * 2); cx.fill();
+
+    requestAnimationFrame(drawGalaxy);
+  }
+
+  const ro = new ResizeObserver(resize);
+  ro.observe(document.getElementById('about'));
+  resize();
+  drawGalaxy();
+})();
+
+/* ══════════════════════════════════════════════════
+   ALIEN ART GENERATOR — draws unique alien NFT art
+══════════════════════════════════════════════════ */
+function drawAlienArt(canvas, id, rarity) {
+  const cx  = canvas.getContext('2d');
+  const W   = canvas.width  || 200;
+  const H   = canvas.height || 200;
+  const sq  = Math.min(W, H);
+  const cx0 = W / 2, cy0 = H / 2;
+
+  const seed  = id * 137 + 42;
+  const rng   = (n) => { let s = (seed * (n+1) * 6364136223846793005n || (seed * (n+1) * 1234567)); return (((seed * (n + 1) * 1664525 + 1013904223) >>> 0) / 4294967296); };
+  /* deterministic pseudo-random */
+  function pr(n) { return ((seed * (n + 1) * 1664525 + n * 22695477 + 1013904223) >>> 0) / 4294967296; }
+
+  const type    = id % 6;
+  const hue     = Math.round(pr(0) * 360);
+  const hue2    = (hue + 130 + Math.round(pr(1) * 80)) % 360;
+  const sat     = rarity === 'legendary' ? 90 : rarity === 'rare' ? 75 : rarity === 'uncommon' ? 65 : 52;
+  const lgt     = rarity === 'legendary' ? 65 : 50;
+
+  /* Background */
+  const bg = cx.createRadialGradient(cx0, cy0 - sq*.1, sq*.05, cx0, cy0, sq*.72);
+  bg.addColorStop(0,  `hsl(${hue2},${sat}%,16%)`);
+  bg.addColorStop(.6, `hsl(${hue},${sat}%,8%)`);
+  bg.addColorStop(1,  `hsl(${(hue+40)%360},${sat}%,4%)`);
+  cx.fillStyle = bg; cx.fillRect(0, 0, W, H);
+
+  /* Nebula wisps */
+  for (let i = 0; i < 4; i++) {
+    const wx = cx0 + (pr(10+i)-.5) * sq * .8;
+    const wy = cy0 + (pr(14+i)-.5) * sq * .8;
+    const wr = sq * (.15 + pr(18+i) * .2);
+    const wg = cx.createRadialGradient(wx, wy, 0, wx, wy, wr);
+    wg.addColorStop(0, `hsla(${(hue+i*40)%360},80%,60%,0.06)`);
+    wg.addColorStop(1, 'transparent');
+    cx.fillStyle = wg; cx.beginPath(); cx.arc(wx, wy, wr, 0, Math.PI*2); cx.fill();
+  }
+
+  /* Stars in bg */
+  for (let i = 0; i < 30; i++) {
+    cx.globalAlpha = pr(50+i) * .5 + .1;
+    cx.fillStyle = '#fff';
+    cx.beginPath(); cx.arc(pr(50+i)*W, pr(80+i)*H, pr(110+i) * .8 + .2, 0, Math.PI*2); cx.fill();
+  }
+  cx.globalAlpha = 1;
+
+  const bodyY  = cy0 + sq * .05;
+  const headY  = cy0 - sq * .12;
+  const headR  = sq * .24;
+  const bodyRx = sq * .18;
+  const bodyRy = sq * .2;
+
+  /* glow helper */
+  function glow(color, blur) { cx.shadowBlur = blur; cx.shadowColor = color; }
+  function noGlow() { cx.shadowBlur = 0; }
+
+  /* ── Body ── */
+  const bodyG = cx.createRadialGradient(cx0 - bodyRx*.3, bodyY - bodyRy*.2, 2, cx0, bodyY, bodyRx * 1.3);
+  bodyG.addColorStop(0,   `hsl(${hue},${sat}%,${lgt+10}%)`);
+  bodyG.addColorStop(.5,  `hsl(${hue},${sat}%,${lgt}%)`);
+  bodyG.addColorStop(1,   `hsl(${hue},${sat}%,${lgt-20}%)`);
+  glow(`hsl(${hue},80%,60%)`, 14);
+  cx.fillStyle = bodyG;
+  cx.beginPath(); cx.ellipse(cx0, bodyY, bodyRx, bodyRy, 0, 0, Math.PI*2); cx.fill();
+  noGlow();
+
+  /* Belly */
+  const bellyG = cx.createRadialGradient(cx0, bodyY+5, 2, cx0, bodyY+5, bodyRx*.7);
+  bellyG.addColorStop(0,  `hsla(${hue2},60%,${lgt+20}%,0.5)`);
+  bellyG.addColorStop(1,  'transparent');
+  cx.fillStyle = bellyG;
+  cx.beginPath(); cx.ellipse(cx0, bodyY+8, bodyRx*.55, bodyRy*.6, 0, 0, Math.PI*2); cx.fill();
+
+  /* ── Type-specific extras before head ── */
+  if (type === 1 || type === 4) {
+    /* Tentacles / cape */
+    for (let i = 0; i < 5; i++) {
+      const angle = (-0.5 + i * .25) * Math.PI;
+      const len   = sq * (.22 + pr(200+i) * .12);
+      cx.strokeStyle = `hsla(${hue},${sat}%,${lgt}%,0.7)`;
+      cx.lineWidth = 3 - i * .4;
+      glow(`hsl(${hue},80%,60%)`, 6);
+      cx.beginPath();
+      cx.moveTo(cx0 + Math.cos(angle) * bodyRx * .7, bodyY + bodyRy * .6);
+      cx.quadraticCurveTo(
+        cx0 + Math.cos(angle) * len * .8, bodyY + bodyRy + len * .5,
+        cx0 + Math.cos(angle) * len * (.5 + pr(205+i) * .4), bodyY + bodyRy + len * .85
+      );
+      cx.stroke();
+    }
+    noGlow();
+  }
+
+  if (type === 2 || type === 5) {
+    /* Armor / wing plates */
+    for (let s of [-1, 1]) {
+      cx.fillStyle = `hsla(${hue2},${sat}%,${lgt-10}%,0.8)`;
+      glow(`hsl(${hue2},80%,60%)`, 8);
+      cx.beginPath();
+      cx.moveTo(cx0 + s * bodyRx * .9, bodyY - bodyRy * .3);
+      cx.lineTo(cx0 + s * bodyRx * 1.7, bodyY - sq * .1);
+      cx.lineTo(cx0 + s * bodyRx * 1.5, bodyY + bodyRy * .3);
+      cx.closePath(); cx.fill();
+    }
+    noGlow();
+  }
+
+  /* ── Head ── */
+  const headG = cx.createRadialGradient(cx0 - headR*.3, headY - headR*.25, headR*.05, cx0, headY, headR);
+  headG.addColorStop(0,  `hsl(${hue},${sat}%,${lgt+15}%)`);
+  headG.addColorStop(.4, `hsl(${hue},${sat}%,${lgt+5}%)`);
+  headG.addColorStop(1,  `hsl(${hue},${sat}%,${lgt-15}%)`);
+  glow(`hsl(${hue},80%,60%)`, 16);
+  cx.fillStyle = headG;
+  cx.beginPath(); cx.ellipse(cx0, headY, headR, headR * (type===3?.8:1), 0, 0, Math.PI*2); cx.fill();
+  noGlow();
+
+  /* ── Antennae ── */
+  if (type !== 2) {
+    for (let s of [-1, 1]) {
+      const ax = cx0 + s * headR * (.35 + pr(300) * .2);
+      const ay = headY - headR * .85;
+      const tipX = ax + s * sq * (.06 + pr(301) * .06);
+      const tipY = ay - sq * (.12 + pr(302) * .08);
+      cx.strokeStyle = `hsl(${hue2},80%,${lgt+15}%)`;
+      cx.lineWidth = 2; glow(`hsl(${hue2},80%,70%)`, 8);
+      cx.beginPath(); cx.moveTo(ax, ay); cx.lineTo(tipX, tipY); cx.stroke();
+      /* orb */
+      cx.fillStyle = `hsl(${hue2},90%,70%)`;
+      glow(`hsl(${hue2},90%,70%)`, 12);
+      cx.beginPath(); cx.arc(tipX, tipY, 3.5 + pr(303)*2, 0, Math.PI*2); cx.fill();
+      noGlow();
+    }
+  } else {
+    /* Mechanical antenna */
+    cx.fillStyle = `hsl(${hue2},60%,50%)`;
+    glow(`hsl(${hue2},80%,60%)`, 8);
+    cx.fillRect(cx0 - 3, headY - headR - sq*.12, 6, sq*.12);
+    cx.beginPath(); cx.arc(cx0, headY - headR - sq*.12, 8, 0, Math.PI*2); cx.fill();
+    noGlow();
+  }
+
+  /* ── Eyes ── */
+  const eyeCount = (type === 1) ? 3 : (type === 4) ? 1 : 2;
+  const eyeSpacing = headR * (eyeCount === 1 ? 0 : eyeCount === 3 ? .38 : .48);
+
+  for (let e = 0; e < eyeCount; e++) {
+    const ex = cx0 + (e - (eyeCount-1)/2) * eyeSpacing;
+    const ey = headY - headR * .04;
+    const er = headR * (.16 + pr(400+e) * .06);
+
+    /* eye white */
+    cx.fillStyle = '#fff';
+    glow('#fff', 4);
+    cx.beginPath(); cx.arc(ex, ey, er, 0, Math.PI*2); cx.fill();
+
+    /* iris */
+    const irisCols = ['#00D4FF','#FF4488','#44FF88','#FFD700','#FF8800','#AA44FF'];
+    const iCol = irisCols[(id + e) % irisCols.length];
+    cx.fillStyle = iCol;
+    glow(iCol, 8);
+    cx.beginPath(); cx.arc(ex, ey, er*.72, 0, Math.PI*2); cx.fill();
+
+    /* pupil */
+    noGlow();
+    cx.fillStyle = '#050510';
+    cx.beginPath(); cx.arc(ex, ey, er*.38, 0, Math.PI*2); cx.fill();
+
+    /* eye shine */
+    cx.globalAlpha = .85;
+    cx.fillStyle = '#fff';
+    cx.beginPath(); cx.arc(ex - er*.24, ey - er*.24, er*.18, 0, Math.PI*2); cx.fill();
+    cx.globalAlpha = 1;
+    noGlow();
+  }
+
+  /* ── Mouth ── */
+  const mx = cx0, my = headY + headR * .42;
+  cx.strokeStyle = `hsl(${hue2},80%,${lgt+15}%)`;
+  cx.lineWidth = 2; cx.lineCap = 'round';
+  glow(`hsl(${hue2},80%,70%)`, 6);
+  const moodSeed = pr(600);
+  if (moodSeed > .5) {
+    /* smile */
+    cx.beginPath();
+    cx.arc(mx, my - headR*.12, headR*.28, .2*Math.PI, .8*Math.PI); cx.stroke();
+  } else {
+    /* neutral / O */
+    cx.beginPath(); cx.arc(mx, my, headR*.1, 0, Math.PI*2); cx.stroke();
+  }
+  noGlow();
+
+  /* ── Rarity glow ring ── */
+  if (rarity !== 'common') {
+    const ringCols = {legendary:'#FFD700', rare:'#C084FC', uncommon:'#00C8FF'};
+    const ringC = ringCols[rarity];
+    cx.strokeStyle = ringC;
+    cx.lineWidth = rarity === 'legendary' ? 2.5 : 1.5;
+    glow(ringC, rarity === 'legendary' ? 16 : 10);
+    cx.globalAlpha = .35;
+    cx.beginPath(); cx.arc(cx0, cy0, sq*.46, 0, Math.PI*2); cx.stroke();
+    cx.globalAlpha = 1; noGlow();
+  }
+
+  /* ── ID watermark ── */
+  cx.fillStyle = 'rgba(255,255,255,0.1)';
+  cx.font = `700 ${sq*.065}px 'Orbitron',monospace`;
+  cx.textAlign = 'right'; cx.textBaseline = 'bottom';
+  cx.fillText(`#${String(id).padStart(3,'0')}`, W - sq*.04, H - sq*.03);
+}
+
+/* Museum images are now static SVG files — no canvas needed */
+
+/* ══════════════════════════════════════════════════
+   IMAGE MAP — exact filenames from the images folder
+══════════════════════════════════════════════════ */
+const IMAGE_MAP = {
+  1:'001 ID .png',   2:'002 ID.png',      3:'003.png',
+  4:'004\\.png',     5:'005.png',         6:'006.png',
+  7:'007.png',       8:'008.png',         9:'009.png',
+  10:'0010 copia.png', 11:'011.png',      12:'012.png',
+  13:'013.png',      14:'0014.png',       15:'015.png',
+  16:'016.png',      17:'017 vero.png',   18:'018 copia.png',
+  19:'019.png',      20:'020.png',        21:'021.png',
+  22:'022.png',      23:'023.png',        24:'024.png',
+  25:'025.png',      26:'026.png',        27:'027.png',
+  28:'028.png',      29:'029.png',        30:'030.png',
+  31:'031.png',      32:'032.png',        33:'033.png',
+  34:'034.png',      35:'035.png',        36:'036.png',
+  37:'037.png',      38:'038.png',        39:'039.png',
+  40:'040.png',      41:'041.png',        42:'042.png',
+  43:'043.png',      44:'044.png',        45:'045.png',
+  46:'046.png',      47:'0047.png',       48:'048.png',
+  49:'049.png',      50:'50.png',         51:'051.png',
+  52:'0052.png',     53:'0053.png',       54:'054.png',
+  55:'0055.png',     56:'0056.png',       57:'057.png',
+  58:'058.png',      59:'059.png',        60:'00060.png',
+  61:'061.png',      62:'062.png',        63:'063.png',
+  64:'064.png',      65:'065.png',        66:'066.png',
+  67:'067 copia.png',68:'068.png',        69:'069.png',
+  70:'070.png',      71:'071.png',        72:'072.png',
+  73:'073.png',      74:'074.png',        75:'075.png',
+  76:'076.png',      77:'077.png',        78:'078.png',
+  79:'079.png',      80:'080.png',        81:'081.png',
+  82:'082.png',      83:'0083.png',       84:'084.png',
+  85:'085.png',      86:'086.png',        87:'087.png',
+  88:'088.png',      89:'089.png',        90:'090.png',
+  91:'091.png',      92:'092.png',        93:'093.png',
+  94:'094.png',      95:'095.png',        96:'096.png',
+  97:'097.png',      98:'098.png',        99:'099.png',
+  100:'100.png'
+};
+
+/* ══════════════════════════════════════════════════
+   NFT GRID GENERATION — card
+══════════════════════════════════════════════════ */
+function getRarity(id) {
+  if (id <= 5)  return 'legendary';
+  if (id <= 15) return 'rare';
+  if (id <= 40) return 'uncommon';
+  return 'common';
+}
+
+const rarityNames = { legendary:'ULTRA RARE', rare:'ULTRA RARE', uncommon:'ULTRA RARE', common:'ULTRA RARE' };
+
+(function buildGrid() {
+  const grid = document.getElementById('nftGrid');
+
+  for (let id = 1; id <= 100; id++) {
+    const rarity = getRarity(id);
+
+    const card = document.createElement('div');
+    card.className = 'nft-card';
+    card.dataset.rarity = rarity;
+    card.dataset.id     = id;
+
+    /* image — loaded from static SVG file */
+    const imgDiv = document.createElement('div');
+    imgDiv.className = 'card-img';
+
+    const img = document.createElement('img');
+    img.src     = 'images/' + encodeURIComponent(IMAGE_MAP[id] || '');
+    img.alt     = `NFT #${String(id).padStart(3,'0')}`;
+    img.loading = 'lazy';
+    imgDiv.appendChild(img);
+
+    /* overlay */
+    const overlay = document.createElement('div');
+    overlay.className = 'card-overlay';
+    overlay.innerHTML = `
+      <a href="https://opensea.io/spacelostclub" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24"><path d="M12 0C5.374 0 0 5.374 0 12c0 6.627 5.374 12 12 12s12-5.373 12-12c0-6.626-5.374-12-12-12zm-2.04 17.94H6.86V10.3l3.1.014v7.626zm-1.558-8.677a1.8 1.8 0 1 1 0-3.6 1.8 1.8 0 0 1 0 3.6zm10.69 8.677h-3.094v-3.7c0-1.298-.464-2.186-1.627-2.186-.888 0-1.415.597-1.647 1.173-.085.207-.106.495-.106.784v3.929H9.524s.042-6.374 0-7.634h3.094v1.082c.41-.634 1.144-1.538 2.783-1.538 2.033 0 3.556 1.328 3.556 4.182l-.002 3.908z"/></svg>
+        View on OpenSea
+      </a>`;
+    imgDiv.appendChild(overlay);
+    card.appendChild(imgDiv);
+
+    /* info */
+    const info = document.createElement('div');
+    info.className = 'card-info';
+    info.innerHTML = `
+      <div class="card-header">
+        <span class="card-id">#${String(id).padStart(3,'0')}</span>
+        <span class="rarity-badge ${rarity}">${rarityNames[rarity]}</span>
+      </div>`;
+    card.appendChild(info);
+    grid.appendChild(card);
+  }
+})();
+
+/* filter system removed — all NFTs are ULTRA RARE */
+
+/* ══════════════════════════════════════════════════
+   NAV SCROLL EFFECT
+══════════════════════════════════════════════════ */
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('solid', scrollY > 60);
+}, { passive: true });
+
+/* ══════════════════════════════════════════════════
+   MOBILE NAV
+══════════════════════════════════════════════════ */
+function toggleMob() {
+  document.getElementById('ham').classList.toggle('open');
+  document.getElementById('mobMenu').classList.toggle('open');
+  document.body.style.overflow = document.getElementById('mobMenu').classList.contains('open') ? 'hidden' : '';
+}
+function closeMob() {
+  document.getElementById('ham').classList.remove('open');
+  document.getElementById('mobMenu').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+/* ══════════════════════════════════════════════════
+   SCROLL REVEAL
+══════════════════════════════════════════════════ */
+const ro = new IntersectionObserver(entries => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      setTimeout(() => {
+        e.target.classList.add('in');
+      }, i * 55);
+      ro.unobserve(e.target);
+    }
+  });
+}, { threshold: .08 });
+
+document.querySelectorAll('.reveal,.reveal-scale').forEach(el => ro.observe(el));
+</script>
+</body>
+</html>
